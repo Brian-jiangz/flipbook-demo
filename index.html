@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f9f7">
+  <meta name="description" content="页间是一款可直接在浏览器中打开 PDF 的在线翻页阅读器。">
+  <title>页间 · 在线翻页阅读器</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="reader.css">
+  <script src="reader.js" defer></script>
+</head>
+<body>
+  <svg class="symbols" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6a6 6 0 0 0-4-1.5H3v14h5a6 6 0 0 1 4 1.5 6 6 0 0 1 4-1.5h5v-14h-5A6 6 0 0 0 12 6Zm0 0v14"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V3m-4 4 4-4 4 4M4 15v5h16v-5"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 2.8V17"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4"/></symbol>
+    <symbol id="i-collapse" viewBox="0 0 24 24"><path d="M4 8h4V4m12 4h-4V4M8 20v-4H4m12 4v-4h4"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 11a8 8 0 1 1 2 6M4 4v7h7"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  </svg>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark"><svg><use href="#i-book"/></svg></span>
+      <span>页间</span>
+      <span class="brand-description">在线翻页阅读器</span>
+    </div>
+    <div class="header-actions">
+      <button id="example" class="button secondary" type="button" hidden><svg><use href="#i-reset"/></svg><span>返回示例</span></button>
+      <button id="open-file" class="button primary" type="button"><svg><use href="#i-upload"/></svg><span>打开 PDF</span></button>
+      <input id="file" type="file" accept=".pdf,application/pdf" hidden>
+    </div>
+  </header>
+  <main id="workspace" class="workspace">
+    <aside id="sidebar" class="sidebar" aria-label="目录面板">
+      <div class="sidebar-heading">
+        <h2><svg><use href="#i-list"/></svg>目录</h2>
+        <button id="close-sidebar" class="icon-button close-sidebar" type="button" aria-label="关闭目录"><svg><use href="#i-close"/></svg></button>
+      </div>
+      <nav id="toc" class="toc" aria-label="手册目录"></nav>
+      <div class="privacy"><svg><use href="#i-lock"/></svg><span>打开的 PDF 仅在当前浏览器中处理</span></div>
+    </aside>
+    <button id="scrim" class="scrim" type="button" aria-label="关闭目录" hidden></button>
+    <section class="reader" aria-labelledby="title">
+      <div class="reader-heading">
+        <div class="document">
+          <span id="document-kind" class="document-kind">示例手册</span>
+          <h1 id="title">潮汐之间</h1>
+        </div>
+        <button class="button secondary mobile-toc" id="toggle-sidebar" type="button" aria-controls="sidebar" aria-expanded="false"><svg><use href="#i-list"/></svg><span>目录</span></button>
+      </div>
+      <div id="stage" class="stage" aria-label="阅读区">
+        <div id="book" class="book" aria-busy="false"></div>
+        <div id="message" class="message" role="status" hidden></div>
+        <div id="drop-layer" class="drop-layer" aria-hidden="true" hidden><svg><use href="#i-upload"/></svg>松开以打开 PDF</div>
+      </div>
+      <div class="reader-controls">
+        <div class="controls-row">
+          <span class="controls-hint"><kbd>←</kbd><kbd>→</kbd> 翻页</span>
+          <div class="pager" aria-label="翻页工具">
+            <button id="previous" class="icon-button" type="button" title="上一页" aria-label="上一页"><svg><use href="#i-left"/></svg></button>
+            <form id="jump" class="page-count">
+              <input id="page-number" type="text" inputmode="numeric" size="3" maxlength="9" autocomplete="off" aria-label="跳转到页码">
+              <span>/</span> <span id="total"></span>
+            </form>
+            <button id="next" class="icon-button" type="button" title="下一页" aria-label="下一页"><svg><use href="#i-right"/></svg></button>
+          </div>
+          <div class="view-actions">
+            <button id="fullscreen" class="icon-button" type="button" title="全屏阅读" aria-label="全屏阅读"><svg><use href="#i-expand"/></svg></button>
+          </div>
+        </div>
+        <div id="announcement" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+      </div>
+    </section>
+  </main>
+  <dialog id="password-dialog" aria-labelledby="password-title">
+    <form method="dialog">
+      <h2 id="password-title">输入 PDF 密码</h2>
+      <label for="password">文档密码</label>
+      <input id="password" type="password" autocomplete="off" required autofocus>
+      <div class="dialog-actions">
+        <button id="cancel-password" class="button secondary" type="button">取消</button>
+        <button class="button primary" value="unlock">打开</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
