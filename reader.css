@@ -75,14 +75,14 @@ h1 { margin: 5px 0 0; font-size: clamp(23px, 2.3vw, 31px); line-height: 1.24; fo
 .shore-detail { width: 100%; aspect-ratio: 3.55; object-fit: cover; object-position: 50% 72%; margin: 0 0 5%; }
 .reader-controls { padding: 10px 34px; min-height: 66px; display: flex; align-items: center; background: #f8f9f7; border-top: 1px solid var(--border); }
 .controls-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; }
-.pager { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.pager { grid-column: 2; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .icon-button { width: 44px; height: 44px; border-radius: 8px; border: 1px solid #dce3dc; display: grid; place-items: center; color: #2a3c33; background: #fff; }
 .icon-button:disabled { color: #7a897e; opacity: .52; background: #f4f6f3; }
 .page-count { display: flex; align-items: center; justify-content: center; gap: 7px; color: #526159; font-size: 13px; font-variant-numeric: tabular-nums; }
 .page-count input { width: 42px; height: 36px; padding: 2px; text-align: center; background: #fff; border: 1px solid var(--border); border-radius: 6px; color: #263b31; font-weight: 650; }
 .controls-hint { color: var(--muted); font-size: 12px; white-space: nowrap; }
 kbd { display: inline-block; padding: 2px 5px; margin-right: 3px; border: 1px solid var(--border); border-radius: 4px; background: #fff; font: inherit; }
-.view-actions { justify-self: end; }
+.view-actions { grid-column: 3; justify-self: end; }
 .message { position: absolute; z-index: 2; bottom: 10px; left: 50%; transform: translateX(-50%); padding: 9px 13px; border: 1px solid var(--border); border-radius: 9px; background: #fff; box-shadow: 0 3px 14px #2935301c; max-width: calc(100% - 24px); width: max-content; font-size: 13px; }
 .message.error { color: #8a2d27; }
 .drop-layer { position: absolute; z-index: 3; inset: 10px; border: 2px dashed #517263; border-radius: 12px; background: #eef5eff4; display: flex; align-items: center; justify-content: center; gap: 9px; color: #254b3e; pointer-events: none; }
